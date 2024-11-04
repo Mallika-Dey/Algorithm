@@ -19,6 +19,7 @@ public:
     int addKeys(int val);
     Node* splitNode(Node* nd, int *midValue);
     void addKeyChild(Node* right, int midValue);
+    void print(int level);
 };
 
 class BTree
@@ -30,10 +31,12 @@ public:
     {
         root=nullptr;
     }
-    Node* getRoot() {
+    Node* getRoot()
+    {
         return this->root;
     }
     void add(int val);
+    void printNode();
 };
 
 void BTree::add(int val)
@@ -96,11 +99,12 @@ Node* Node::splitNode(Node* nd, int *midValue)
     Node* right=new Node();
     int mid=m/2;
     *midValue=nd->keys[mid];
+    --nd->totalKeys;
 
     for(int j=mid+1; j<m; j++)
     {
-        right->child[right->totalKeys++]=nd->child[j];
-        right->keys[right->totalKeys]=nd->keys[j];
+        right->child[right->totalKeys]=nd->child[j];
+        right->keys[right->totalKeys++]=nd->keys[j];
         nd->child[j]=nullptr;
         nd->totalKeys--;
     }
@@ -143,6 +147,28 @@ void Node::addKeyChild(Node* right, int midValue)
     this->totalKeys++;
 }
 
+void BTree::printNode()
+{
+    if(root==nullptr)return;
+    this->root->print(0);
+}
+
+void Node::print(int level)
+{
+    cout<<"level: "<<level<<endl;
+    for(int i=0; i<this->totalKeys; i++)
+    {
+        cout<<keys[i]<<" * ";
+        if(!this->isleaf)
+        {
+            this->child[i]->print(level+1);
+        }
+        cout<<endl;
+    }
+    if(!this->isleaf)
+        this->child[totalKeys]->print(level+1);
+}
+
 int main()
 {
     BTree bTree=BTree();
@@ -150,7 +176,7 @@ int main()
     bTree.add(1);
     bTree.add(4);
     bTree.add(-1);
-
+    bTree.printNode();
     return 0;
 }
 
