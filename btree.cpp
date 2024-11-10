@@ -7,8 +7,8 @@ class Node
 {
 public:
     int totalKeys;
-    int keys[m-1];
-    Node* child[m];
+    int keys[m];
+    Node* child[m+1];
     bool isleaf;
     Node()
     {
